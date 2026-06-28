@@ -30,7 +30,7 @@ function formatPrice(amount: number) {
 
 // ─── Email envoyé à l'admin à chaque nouvelle réservation ───────────────────
 export async function sendAdminNotification(data: ReservationEmailData) {
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: FROM,
     to: ADMIN_EMAIL,
     subject: `🚗 Nouvelle réservation — ${data.carName}`,
@@ -117,13 +117,14 @@ export async function sendAdminNotification(data: ReservationEmailData) {
       </div>
     `,
   })
+  if (error) console.error('[EMAIL] Admin notification failed:', error)
 }
 
 // ─── Email envoyé au client si son email est fourni ─────────────────────────
 export async function sendClientConfirmation(data: ReservationEmailData) {
   if (!data.customerEmail) return
 
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: FROM,
     to: data.customerEmail,
     subject: `Votre demande de réservation — ${data.carName}`,
@@ -199,4 +200,5 @@ export async function sendClientConfirmation(data: ReservationEmailData) {
       </div>
     `,
   })
+  if (error) console.error('[EMAIL] Client confirmation failed:', error)
 }
