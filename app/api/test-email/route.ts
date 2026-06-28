@@ -10,9 +10,7 @@ export async function GET() {
     return NextResponse.json({ error: 'RESEND_API_KEY is missing' }, { status: 500 })
   }
 
-  const resend = new Resend(apiKey)
-
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await new Resend(apiKey).emails.send({
     from,
     to,
     subject: 'Test ConnectiCAR — Email fonctionne !',

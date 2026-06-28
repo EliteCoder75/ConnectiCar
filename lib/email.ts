@@ -1,6 +1,10 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  const key = process.env.RESEND_API_KEY
+  if (!key) throw new Error('RESEND_API_KEY is not set')
+  return new Resend(key)
+}
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
 const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? 'bachirguedouda@gmail.com'
@@ -30,7 +34,7 @@ function formatPrice(amount: number) {
 
 // ─── Email envoyé à l'admin à chaque nouvelle réservation ───────────────────
 export async function sendAdminNotification(data: ReservationEmailData) {
-  const { error } = await resend.emails.send({
+  const { error } = await getResend().emails.send({
     from: FROM,
     to: ADMIN_EMAIL,
     subject: `🚗 Nouvelle réservation — ${data.carName}`,
@@ -124,7 +128,7 @@ export async function sendAdminNotification(data: ReservationEmailData) {
 export async function sendClientConfirmation(data: ReservationEmailData) {
   if (!data.customerEmail) return
 
-  const { error } = await resend.emails.send({
+  const { error } = await getResend().emails.send({
     from: FROM,
     to: data.customerEmail,
     subject: `Votre demande de réservation — ${data.carName}`,
