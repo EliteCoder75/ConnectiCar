@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import Image from 'next/image'
 import { Phone, MapPin, Clock, MessageCircle, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -32,18 +33,32 @@ export default function ContactPage() {
   const whatsappUrl = `https://wa.me/213550385419?text=${encodeURIComponent('Bonjour ConnectiCAR, je souhaite avoir des informations sur la location de voitures.')}`
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* En-tête */}
-      <div className="mb-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E31E24] mb-3">Contact</p>
-        <h1 className="text-4xl sm:text-5xl font-black text-[#0A0A0A] tracking-tight mb-4">
-          Parlons de votre<br />
-          <span className="text-gradient">prochain trajet</span>
-        </h1>
-        <p className="text-gray-500 text-lg max-w-xl">
-          Notre équipe est disponible 7j/7 pour répondre à toutes vos questions et organiser votre location.
-        </p>
+    <>
+      {/* Hero immersif */}
+      <div className="relative bg-[#0A0A0A] overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/contact-hero.jpg"
+            alt="Famille en voiture ConnectiCAR"
+            fill
+            className="object-cover opacity-50"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/90 via-[#0A0A0A]/60 to-transparent" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E31E24] mb-4">Contact</p>
+          <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight mb-5">
+            Parlons de votre<br />
+            <span className="text-[#E31E24]">prochain trajet</span>
+          </h1>
+          <p className="text-gray-400 text-lg max-w-lg">
+            Notre équipe est disponible 7j/7 pour répondre à toutes vos questions et organiser votre location.
+          </p>
+        </div>
       </div>
+
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
@@ -174,6 +189,29 @@ export default function ContactPage() {
         </div>
 
       </div>
+
     </div>
+
+      {/* Map pleine largeur */}
+      <div className="overflow-hidden">
+        <div className="bg-[#0A0A0A] px-5 py-4 flex items-center gap-3">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#E31E24] shrink-0" />
+          <div>
+            <p className="text-white font-bold text-sm">Siège ConnectiCAR</p>
+            <p className="text-gray-400 text-xs">Cité 212 logements GMP, Béjaïa 06000</p>
+          </div>
+        </div>
+        <iframe
+          src="https://maps.google.com/maps?q=cité+212+logements+GMP+bejaia+06000+Algeria&output=embed&z=15"
+          width="100%"
+          height="500"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="ConnectiCAR — Cité 212 logements GMP, Béjaïa"
+        />
+      </div>
+    </>
   )
 }

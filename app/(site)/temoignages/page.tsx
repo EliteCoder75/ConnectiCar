@@ -1,4 +1,5 @@
 import { Star, Quote } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const TESTIMONIALS = [
@@ -63,33 +64,42 @@ const GoogleIcon = () => (
 
 export default function TemoignagesPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
-      {/* En-tête */}
-      <div className="mb-14">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E31E24] mb-3">Avis clients</p>
-        <h1 className="text-4xl sm:text-5xl font-black text-[#0A0A0A] tracking-tight mb-4">
-          Ils nous font<br />
-          <span className="text-gradient">confiance</span>
-        </h1>
-        <p className="text-gray-500 text-lg max-w-xl">
-          Découvrez les avis de nos clients sur leur expérience avec ConnectiCAR à Béjaïa et Alger.
-        </p>
-
-        {/* Score global */}
-        <div className="flex items-center gap-4 mt-6">
-          <div className="flex items-center gap-1.5 bg-white border border-gray-100 shadow-sm rounded-2xl px-5 py-3">
+    <>
+      {/* Hero immersif */}
+      <div className="relative bg-[#0A0A0A] overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/temoignage.webp"
+            alt="Client satisfait ConnectiCAR"
+            fill
+            className="object-cover opacity-50"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/90 via-[#0A0A0A]/60 to-transparent" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#E31E24] mb-4">Avis clients</p>
+          <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight mb-5">
+            Ils nous font<br />
+            <span className="text-[#E31E24]">confiance</span>
+          </h1>
+          <p className="text-gray-400 text-lg max-w-lg mb-8">
+            Découvrez les avis de nos clients sur leur expérience avec ConnectiCAR à Béjaïa et Alger.
+          </p>
+          <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-3 w-fit">
             <div className="flex gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-[#E31E24] text-[#E31E24]" />
               ))}
             </div>
-            <span className="font-black text-[#0A0A0A] ml-1">5 / 5</span>
+            <span className="font-black text-white ml-1">5 / 5</span>
             <span className="text-gray-400 text-sm ml-1">sur Google</span>
             <GoogleIcon />
           </div>
         </div>
       </div>
+
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
       {/* Grille des témoignages */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
@@ -156,5 +166,6 @@ export default function TemoignagesPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }
