@@ -30,6 +30,7 @@ export async function createReservation(data: ReservationInsert): Promise<{ id: 
 
   // Envoi des emails (non bloquant — une erreur email ne bloque pas la réservation)
   const car = await getCarById(data.car_id)
+  console.log('[RESERVATION] car_id:', data.car_id, '→ car found:', !!car)
   if (car) {
     const emailData = {
       customerName: data.customer_name,
@@ -43,10 +44,11 @@ export async function createReservation(data: ReservationInsert): Promise<{ id: 
       totalPrice: data.total_price ?? 0,
       notes: data.notes,
     }
-    await Promise.allSettled([
+    const results = await Promise.allSettled([
       sendAdminNotification(emailData),
       sendClientConfirmation(emailData),
     ])
+    console.log('[RESERVATION] email results:', results.map(r => r.status))
   }
 
   revalidatePath('/')
