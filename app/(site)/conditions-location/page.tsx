@@ -56,7 +56,7 @@ export default function ConditionsLocationPage() {
       <div className="relative bg-[#0A0A0A] overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/conditions.jpg"
+            src="/conditions.webp"
             alt="Véhicule ConnectiCAR"
             fill
             className="object-cover opacity-50"

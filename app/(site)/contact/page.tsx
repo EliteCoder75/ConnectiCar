@@ -38,7 +38,7 @@ export default function ContactPage() {
       <div className="relative bg-[#0A0A0A] overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/contact-hero.jpg"
+            src="/contact-hero.webp"
             alt="Famille en voiture ConnectiCAR"
             fill
             className="object-cover opacity-50"
