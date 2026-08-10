@@ -14,6 +14,7 @@ export interface Car {
   transmission: Transmission
   fuel_type: FuelType
   seats: number
+  quantity: number
   price_per_day: number
   deposit_amount: number | null
   features: string[]
@@ -86,6 +87,7 @@ export const FEATURE_LABELS: Record<string, string> = {
   esp: 'ESP',
   aide_stationnement: 'Aide au stationnement',
   pack_sport: 'Pack Sport',
+  avec_chauffeur: 'Avec chauffeur',
 }
 
 export const PICKUP_LOCATIONS: PickupLocation[] = [

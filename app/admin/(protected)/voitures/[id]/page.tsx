@@ -23,6 +23,7 @@ export default function EditVoiturePage() {
     transmission: 'automatic' as Transmission,
     fuel_type: 'essence' as FuelType,
     seats: 5,
+    quantity: 1,
     price_per_day: 0,
     deposit_amount: null as number | null,
     features: '',
@@ -43,6 +44,7 @@ export default function EditVoiturePage() {
         transmission: car.transmission,
         fuel_type: car.fuel_type,
         seats: car.seats,
+        quantity: car.quantity,
         price_per_day: car.price_per_day,
         deposit_amount: car.deposit_amount,
         features: car.features.join(', '),
@@ -146,6 +148,13 @@ export default function EditVoiturePage() {
             <input type="number" value={form.deposit_amount ?? ''}
               onChange={(e) => set('deposit_amount', e.target.value ? +e.target.value : null)}
               placeholder="Optionnel" className="input-field" />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Field label="Quantité en flotte *" hint="nombre d'exemplaires de ce véhicule">
+            <input type="number" value={form.quantity} onChange={(e) => set('quantity', +e.target.value)}
+              min={1} max={50} className="input-field" />
           </Field>
         </div>
 

@@ -19,7 +19,7 @@ const sections = [
     icon: CreditCard,
     accent: '#0891b2',
     items: [
-      { ok: true, text: 'Caution en espèces ou par virement à la remise du véhicule' },
+      { ok: true, text: 'Caution en espèces à la remise du véhicule' },
       { ok: true, text: 'Paiement intégral à la prise en charge' },
       { ok: true, text: 'Caution restituée au retour du véhicule en bon état' },
       { ok: false, text: 'Aucun paiement en ligne requis pour la réservation' },
@@ -30,7 +30,7 @@ const sections = [
     icon: Fuel,
     accent: '#ea580c',
     items: [
-      { ok: true, text: 'Kilométrage illimité sur tout le territoire algérien' },
+      { ok: false, text: 'Kilométrage limité à 400 km' },
       { ok: true, text: 'Véhicule remis et à restituer avec le plein' },
       { ok: false, text: 'Carburant manquant facturé au tarif en vigueur' },
       { ok: false, text: 'Sortie du territoire strictement interdite' },

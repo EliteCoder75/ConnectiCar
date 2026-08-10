@@ -20,6 +20,7 @@ export default function NouvelleVoiturePage() {
     transmission: 'automatic' as Transmission,
     fuel_type: 'essence' as FuelType,
     seats: 5,
+    quantity: 1,
     price_per_day: 0,
     deposit_amount: null as number | null,
     features: '' as string,
@@ -115,6 +116,13 @@ export default function NouvelleVoiturePage() {
             <input type="number" value={form.deposit_amount ?? ''}
               onChange={(e) => set('deposit_amount', e.target.value ? +e.target.value : null)}
               placeholder="Optionnel" className="input-field" />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Field label="Quantité en flotte *" hint="nombre d'exemplaires de ce véhicule">
+            <input type="number" value={form.quantity} onChange={(e) => set('quantity', +e.target.value)}
+              min={1} max={50} className="input-field" />
           </Field>
         </div>
 
