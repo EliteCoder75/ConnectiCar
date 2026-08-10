@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import type { Reservation, ReservationInsert, ReservationStatus } from '@/types'
@@ -8,7 +8,9 @@ import { sendAdminNotification, sendClientConfirmation } from '@/lib/email'
 import { getCarById } from '@/lib/actions/cars'
 
 export async function createReservation(data: ReservationInsert): Promise<{ id: string }> {
-  const supabase = await createClient()
+  // Client admin : l'utilisateur public n'a pas de policy RLS de lecture sur
+  // reservations, or l'insertion avec .select() exige de relire la ligne créée.
+  const supabase = await createAdminClient()
 
   // Vérifier la disponibilité avant d'insérer
   const { data: available, error: checkError } = await supabase.rpc('is_car_available', {
