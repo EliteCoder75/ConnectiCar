@@ -3,12 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Car, CalendarCheck, LayoutDashboard, LogOut, Menu, X } from 'lucide-react'
+import { Car, CalendarCheck, CalendarDays, LayoutDashboard, LogOut, Menu, X } from 'lucide-react'
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Tableau de bord', Icon: LayoutDashboard },
   { href: '/admin/voitures', label: 'Voitures', Icon: Car },
   { href: '/admin/reservations', label: 'Réservations', Icon: CalendarCheck },
+  { href: '/admin/agenda', label: 'Agenda', Icon: CalendarDays },
 ]
 
 export default function AdminSidebar({ userEmail }: { userEmail: string }) {
