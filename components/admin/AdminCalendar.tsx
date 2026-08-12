@@ -8,17 +8,16 @@ import {
   endOfWeek,
   eachDayOfInterval,
   isSameMonth,
-  isSameDay,
   isToday,
   format,
   addMonths,
   subMonths,
 } from 'date-fns'
 import { fr } from 'date-fns/locale'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import type { Reservation, ReservationStatus } from '@/types'
 
-const WEEKDAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+const WEEKDAYS = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
 
 const STATUS_LABEL: Record<ReservationStatus, string> = {
   pending: 'En attente',
@@ -38,7 +37,7 @@ function dayKey(d: Date) {
 
 export default function AdminCalendar({ reservations }: { reservations: Reservation[] }) {
   const [month, setMonth] = useState(() => startOfMonth(new Date()))
-  const [selected, setSelected] = useState<Date | null>(new Date())
+  const [modalDay, setModalDay] = useState<Date | null>(null)
 
   const active = useMemo(
     () => reservations.filter((r) => r.status !== 'cancelled'),
@@ -61,142 +60,139 @@ export default function AdminCalendar({ reservations }: { reservations: Reservat
   const gridEnd = endOfWeek(endOfMonth(month), { weekStartsOn: 1 })
   const days = eachDayOfInterval({ start: gridStart, end: gridEnd })
 
-  const selectedEvents = selected ? eventsByDay.get(dayKey(selected)) : undefined
+  const modalEvents = modalDay ? eventsByDay.get(dayKey(modalDay)) : undefined
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[#0A0A0A] capitalize">
+    <div className="max-w-sm">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3.5">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold text-[#0A0A0A] capitalize">
             {format(month, 'MMMM yyyy', { locale: fr })}
           </h2>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => setMonth((m) => subMonths(m, 1))}
-              className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
+              className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
               aria-label="Mois précédent"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             </button>
             <button
-              onClick={() => {
-                setMonth(startOfMonth(new Date()))
-                setSelected(new Date())
-              }}
-              className="text-xs font-semibold text-gray-500 hover:text-[#E31E24] px-2 transition-colors"
+              onClick={() => setMonth(startOfMonth(new Date()))}
+              className="text-[10px] font-semibold text-gray-500 hover:text-[#E31E24] px-1.5 transition-colors"
             >
               Aujourd&apos;hui
             </button>
             <button
               onClick={() => setMonth((m) => addMonths(m, 1))}
-              className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
+              className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
               aria-label="Mois suivant"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center text-[11px] text-gray-400 font-semibold mb-1.5">
-          {WEEKDAYS.map((d) => (
-            <div key={d}>{d}</div>
+        <div className="grid grid-cols-7 gap-0.5 text-center text-[9px] text-gray-300 font-semibold mb-1">
+          {WEEKDAYS.map((d, i) => (
+            <div key={i}>{d}</div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5">
           {days.map((day) => {
             const inMonth = isSameMonth(day, month)
             const key = dayKey(day)
             const evts = eventsByDay.get(key)
-            const isSelected = !!selected && isSameDay(day, selected)
+            const hasEvents = !!evts && (evts.departures.length > 0 || evts.returns.length > 0)
 
             return (
               <button
                 key={key}
-                onClick={() => setSelected(day)}
-                className={`aspect-square rounded-lg sm:rounded-xl p-1 sm:p-1.5 flex flex-col items-start justify-between border transition-colors ${
-                  inMonth ? 'bg-white' : 'bg-gray-50'
-                } ${
-                  isSelected
-                    ? 'border-[#E31E24] ring-1 ring-[#E31E24]'
-                    : 'border-gray-100 hover:border-gray-300'
+                onClick={() => hasEvents && setModalDay(day)}
+                className={`aspect-square rounded-md p-0.5 flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                  hasEvents ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'
                 }`}
               >
                 <span
-                  className={`text-[11px] sm:text-xs ${
+                  className={`text-[10px] leading-none ${
                     inMonth ? 'text-[#0A0A0A]' : 'text-gray-300'
-                  } ${isToday(day) ? 'font-black' : ''}`}
+                  } ${isToday(day) ? 'font-black text-[#E31E24]' : ''}`}
                 >
                   {format(day, 'd')}
                 </span>
-                {evts && (
-                  <div className="flex gap-0.5">
-                    {evts.departures.length > 0 && (
-                      <span
-                        className="w-1.5 h-1.5 rounded-full bg-green-500"
-                        title={`${evts.departures.length} départ(s)`}
-                      />
-                    )}
-                    {evts.returns.length > 0 && (
-                      <span
-                        className="w-1.5 h-1.5 rounded-full bg-[#E31E24]"
-                        title={`${evts.returns.length} retour(s)`}
-                      />
-                    )}
-                  </div>
-                )}
+                <div className="flex gap-0.5 h-1">
+                  {evts && evts.departures.length > 0 && (
+                    <span className="w-1 h-1 rounded-full bg-green-500" />
+                  )}
+                  {evts && evts.returns.length > 0 && (
+                    <span className="w-1 h-1 rounded-full bg-[#E31E24]" />
+                  )}
+                </div>
               </button>
             )
           })}
         </div>
 
-        <div className="flex items-center gap-4 mt-4 text-xs text-gray-500">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-green-500" /> Départ
+        <div className="flex items-center gap-3 mt-3 text-[10px] text-gray-400">
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Départ
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#E31E24]" /> Retour
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E31E24]" /> Retour
           </span>
         </div>
       </div>
 
-      {selected && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5">
-          <h3 className="font-bold text-[#0A0A0A] mb-3 capitalize">
-            {format(selected, 'EEEE d MMMM yyyy', { locale: fr })}
-          </h3>
+      {modalDay && modalEvents && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+          onClick={() => setModalDay(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl max-w-sm w-full max-h-[80vh] overflow-y-auto p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-[#0A0A0A] text-sm capitalize">
+                {format(modalDay, 'EEEE d MMMM yyyy', { locale: fr })}
+              </h3>
+              <button
+                onClick={() => setModalDay(null)}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors"
+                aria-label="Fermer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
-          {!selectedEvents ||
-          (selectedEvents.departures.length === 0 && selectedEvents.returns.length === 0) ? (
-            <p className="text-sm text-gray-400">Aucun départ ni retour ce jour-là.</p>
-          ) : (
             <div className="space-y-4">
-              {selectedEvents.departures.length > 0 && (
+              {modalEvents.departures.length > 0 && (
                 <div>
                   <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">
                     Départs
                   </p>
                   <div className="space-y-2">
-                    {selectedEvents.departures.map((r) => (
+                    {modalEvents.departures.map((r) => (
                       <EventRow key={r.id} r={r} />
                     ))}
                   </div>
                 </div>
               )}
-              {selectedEvents.returns.length > 0 && (
+              {modalEvents.returns.length > 0 && (
                 <div>
                   <p className="text-xs font-semibold text-[#E31E24] uppercase tracking-wide mb-2">
                     Retours
                   </p>
                   <div className="space-y-2">
-                    {selectedEvents.returns.map((r) => (
+                    {modalEvents.returns.map((r) => (
                       <EventRow key={r.id} r={r} />
                     ))}
                   </div>
                 </div>
               )}
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>
