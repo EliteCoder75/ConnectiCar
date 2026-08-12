@@ -7,7 +7,10 @@ function getResend() {
 }
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
-const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL ?? 'bachirguedouda@gmail.com'
+const ADMIN_EMAILS = (process.env.RESEND_ADMIN_EMAIL ?? 'bachirguedouda@gmail.com')
+  .split(',')
+  .map((e) => e.trim())
+  .filter(Boolean)
 
 interface ReservationEmailData {
   customerName: string
@@ -36,7 +39,7 @@ function formatPrice(amount: number) {
 export async function sendAdminNotification(data: ReservationEmailData) {
   const { error } = await getResend().emails.send({
     from: FROM,
-    to: ADMIN_EMAIL,
+    to: ADMIN_EMAILS,
     subject: `🚗 Nouvelle réservation — ${data.carName}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

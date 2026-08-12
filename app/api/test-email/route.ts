@@ -4,7 +4,10 @@ import { Resend } from 'resend'
 export async function GET() {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev'
-  const to = process.env.RESEND_ADMIN_EMAIL ?? 'bachirguedouda@gmail.com'
+  const to = (process.env.RESEND_ADMIN_EMAIL ?? 'bachirguedouda@gmail.com')
+    .split(',')
+    .map((e) => e.trim())
+    .filter(Boolean)
 
   if (!apiKey) {
     return NextResponse.json({ error: 'RESEND_API_KEY is missing' }, { status: 500 })
