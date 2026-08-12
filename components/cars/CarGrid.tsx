@@ -33,7 +33,21 @@ export default function CarGrid({ cars, startDate, endDate }: Props) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+      {/* Mobile — liste complète, scroll naturel, pas de pagination */}
+      <div className="grid grid-cols-1 gap-8 mb-10 sm:hidden">
+        {cars.map((car, index) => (
+          <CarCard
+            key={car.id}
+            car={car}
+            startDate={startDate}
+            endDate={endDate}
+            index={index}
+          />
+        ))}
+      </div>
+
+      {/* Desktop / tablette — grille paginée */}
+      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
         {visible.map((car, index) => (
           <CarCard
             key={car.id}
@@ -45,9 +59,9 @@ export default function CarGrid({ cars, startDate, endDate }: Props) {
         ))}
       </div>
 
-      {/* Navigation carousel */}
+      {/* Navigation carousel — desktop / tablette uniquement */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-3">
+        <div className="hidden sm:flex items-center justify-center gap-3">
           <button
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={page === 0}
