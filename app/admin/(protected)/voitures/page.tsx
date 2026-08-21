@@ -4,6 +4,7 @@ import { formatPrice } from '@/lib/utils/format'
 import { CATEGORY_LABELS } from '@/types'
 import { PlusCircle, Eye, EyeOff, Pencil } from 'lucide-react'
 import DeleteCarBtn from '@/components/admin/DeleteCarBtn'
+import CarBlockButton from '@/components/admin/CarBlockButton'
 
 async function ToggleVisibility({ id, isActive }: { id: string; isActive: boolean }) {
   async function toggle() {
@@ -79,6 +80,7 @@ export default async function VoituresAdminPage() {
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end gap-1">
                         <ToggleVisibility id={car.id} isActive={car.is_active} />
+                        <CarBlockButton carId={car.id} carName={car.name} />
                         <Link
                           href={`/admin/voitures/${car.id}`}
                           className="p-2 text-gray-400 hover:text-[#0A0A0A] rounded-lg hover:bg-gray-100 transition-colors"

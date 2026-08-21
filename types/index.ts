@@ -66,6 +66,15 @@ export interface DateRange {
   to: Date
 }
 
+export interface CarBlock {
+  id: string
+  car_id: string
+  start_date: string
+  end_date: string
+  reason: string | null
+  created_at: string
+}
+
 export const CATEGORY_LABELS: Record<CarCategory, string> = {
   economique: 'Économique',
   confort: 'Confort',

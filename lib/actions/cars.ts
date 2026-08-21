@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import type { Car } from '@/types'
+import type { Car, CarBlock } from '@/types'
 import { MOCK_CARS, isMockMode } from '@/lib/mock-data'
 
 export async function getCars(): Promise<Car[]> {
@@ -126,4 +126,47 @@ export async function toggleCarVisibility(id: string, isActive: boolean): Promis
   if (error) throw new Error(error.message)
   revalidatePath('/')
   revalidatePath('/admin/voitures')
+}
+
+// ——— Blocages de dates (indisponibilité manuelle) ———
+
+export async function getCarBlocks(carId: string): Promise<CarBlock[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('car_blocks')
+    .select('*')
+    .eq('car_id', carId)
+    .order('start_date', { ascending: true })
+
+  if (error) throw new Error(error.message)
+  return data ?? []
+}
+
+export async function createCarBlock(
+  carId: string,
+  startDate: string,
+  endDate: string,
+  reason?: string,
+): Promise<void> {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from('car_blocks')
+    .insert({ car_id: carId, start_date: startDate, end_date: endDate, reason: reason || null })
+
+  if (error) throw new Error(error.message)
+  revalidatePath('/')
+  revalidatePath('/admin/voitures')
+  revalidatePath(`/admin/voitures/${carId}`)
+  revalidatePath(`/voitures/${carId}`)
+}
+
+export async function deleteCarBlock(id: string, carId: string): Promise<void> {
+  const supabase = await createClient()
+  const { error } = await supabase.from('car_blocks').delete().eq('id', id)
+
+  if (error) throw new Error(error.message)
+  revalidatePath('/')
+  revalidatePath('/admin/voitures')
+  revalidatePath(`/admin/voitures/${carId}`)
+  revalidatePath(`/voitures/${carId}`)
 }
