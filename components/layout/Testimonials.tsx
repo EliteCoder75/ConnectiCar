@@ -5,25 +5,25 @@ import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 
 const TESTIMONIALS = [
   {
-    name: 'Fifi Sousou',
-    initials: 'F',
+    name: 'FNourhene Belarbi',
+    initials: 'N',
     color: '#16a34a',
     date: 'Il y a 3 mois',
-    text: "Agence excellente ! J'ai récupéré la voiture à l'aéroport et l'ai ramenée au même endroit 10 jours plus tard. Merci et à bientôt !",
+    text: "Très bonne expérience ! Voitures propres et très confortable Service rapide, sérieux et professionnel, je l'ai recommande vivement toute personne recherchant une voiture fiable et un excellent rapport qualité-prix."
   },
   {
-    name: 'Bensaha Ryma',
-    initials: 'B',
+    name: 'Youlidas Ziani',
+    initials: 'Y',
     color: '#0891b2',
-    date: 'Il y a 3 jours',
-    text: "Excellent service ! Voitures impeccables et équipe très professionnelle. Je recommande vivement ConnectiCAR.",
+    date: 'Il y a 5 mois',
+    text: "Véhicule neuf en parfait état et propre, Le personnel est a l'écoute et très réactif, qualité prix je recommande vivement",
   },
   {
-    name: 'Rafik Achiou',
-    initials: 'R',
+    name: 'Manuela Yaoudarene',
+    initials: 'M',
     color: '#7c3aed',
-    date: 'Il y a 3 jours',
-    text: "Agence excellente ! Des voitures formidables, des prix raisonnables. Merci à vous ConnectiCAR.",
+    date: 'Il y a 4 mois',
+    text: "Expérience excellente Les voitures sont propres le service est professionnel l'équipe est respectueuse et les prix sont raisonnables. Je recommande vivement de traiter avec eux d'après mon expérience Honnêteté, sérieux et crédibilité au rendez-vous Machallah merci♥️",
   },
 ]
 
