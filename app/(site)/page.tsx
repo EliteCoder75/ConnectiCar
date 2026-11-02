@@ -64,8 +64,8 @@ export default async function HomePage({
           {/* Stats compactes */}
           <div className="animate-fade-up delay-200 flex gap-6">
             {[
-              { value: '6+', label: 'Véhicules' },
-              { value: '100%', label: 'Automatique' },
+              { value: '20+', label: 'Véhicules' },
+              { value: 'transmission', label: 'Automatique & Manuelle' },
               { value: '7j/7', label: 'Disponible' },
             ].map((s) => (
               <div key={s.label} className="flex items-center gap-2">
