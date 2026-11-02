@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 const LOCATIONS = [
   { value: 'aeroport', label: 'Aéroport de Béjaïa · Soumam - Abane Ramdane' },
   { value: 'cite212',  label: 'Cité 212 Logements GMP, Béjaïa 06000' },
-  { value: 'aeroport', label: "Aéroport d'Alger · Houari boumedienne" },
+  { value: 'aeroport 16', label: "Aéroport d'Alger · Houari boumedienne" },
   { value: 'autres', label: 'Autres' },
 ]
 

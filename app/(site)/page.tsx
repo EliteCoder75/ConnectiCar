@@ -170,7 +170,7 @@ export default async function HomePage({
             <h2 className="text-4xl font-black text-[#0A0A0A] tracking-tight">
               Notre flotte de voitures
             </h2>
-          </div>
+          </div>   
         )}
 
         <Suspense
